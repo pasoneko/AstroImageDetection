@@ -26,14 +26,15 @@ from threeML import *
 from hawc_hal import HAL, HealpixConeROI, HealpixMapROI
 from astropy.table import Table
 from matplotlib.patches import Ellipse
-
+import sys
+sys.path.append("imagecatalog/")
 #Import HESS catalog
-hess_catalog = Table.read("/datasets/hgps_catalog_v1.fits.gz")
+hess_catalog = Table.read("datasets/hgps_catalog_v1.fits.gz")
 hess_sourcename = hess_catalog['Source_Name']
 hess_coords = SkyCoord(l=hess_catalog["GLON"], b=hess_catalog["GLAT"], frame="galactic")
 
 #Import HAWC Catalog
-hawcv4_table = pd.read_csv('/datasets/4hwc.txt', delimiter=',')
+hawcv4_table = pd.read_csv('datasets/4hwc.txt', delimiter=',')
 hwc4_name = hawcv4_table['Name'].tolist()
 hwc4_ra = hawcv4_table['Ra'].tolist()
 hwc4_dec = hawcv4_table['Dec'].tolist()
@@ -42,7 +43,7 @@ hawcv4_coords = SkyCoord(ra=hwc4_ra, dec=hwc4_dec, unit='deg', frame='icrs')
 
 
 #Import LHAASO Catalog
-df = pd.read_csv("/datasets/lhaaso_cat.csv", comment="#", header=None)
+df = pd.read_csv("datasets/lhaaso_cat.csv", comment="#", header=None)
 df.columns = [
     "Source name", "Components", "RA_2000", "Dec_2000", "Sigma_p95_stat",
     "r_39", "TS", "N0", "Gamma", "TS_100", "Association"
@@ -70,7 +71,7 @@ df["Source name"] = df["Source name"].replace(r'^\s*$', np.nan, regex=True).ffil
 
 
 #Import Fermi-LAT Catalog
-fermi_fits = fits.open('/datasets/gll_psc_v35.fits')
+fermi_fits = fits.open('datasets/gll_psc_v35.fits')
 p_data = fermi_fits[1].data
 fermi_fulltable = Table(p_data)
 

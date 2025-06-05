@@ -1,0 +1,656 @@
+Source0 (point source):
+
+  position:
+
+    ra:
+
+      value: 276.47213827964026
+
+      desc: Right Ascension
+
+      min_value: 275.47213827964026
+
+      max_value: 277.47213827964026
+
+      unit: deg
+
+      is_normalization: false
+
+      delta: 27.647213827964027
+
+      free: true
+
+    dec:
+
+      value: -12.941388498889072
+
+      desc: Declination
+
+      min_value: -13.941388498889072
+
+      max_value: -11.941388498889072
+
+      unit: deg
+
+      is_normalization: false
+
+      delta: 1.2941388498889073
+
+      free: true
+
+    equinox: J2000
+
+  spectrum:
+
+    main:
+
+      Powerlaw:
+
+        K:
+
+          value: 1.0e-24
+
+          desc: Normalization (differential flux at the pivot value)
+
+          min_value: 1.0e-26
+
+          max_value: 1.0e-20
+
+          unit: keV-1 s-1 cm-2
+
+          is_normalization: true
+
+          delta: 0.1
+
+          free: true
+
+        piv:
+
+          value: 10000000000.0
+
+          desc: Pivot value
+
+          min_value: null
+
+          max_value: null
+
+          unit: keV
+
+          is_normalization: false
+
+          delta: 0.1
+
+          free: false
+
+        index:
+
+          value: -2.5
+
+          desc: Photon index
+
+          min_value: -3.0
+
+          max_value: -1.0
+
+          unit: ''
+
+          is_normalization: false
+
+          delta: 0.20099999999999998
+
+          free: true
+
+      polarization: {}
+
+Source1 (point source):
+
+  position:
+
+    ra:
+
+      value: 276.56264570774414
+
+      desc: Right Ascension
+
+      min_value: 275.56264570774414
+
+      max_value: 277.56264570774414
+
+      unit: deg
+
+      is_normalization: false
+
+      delta: 27.656264570774415
+
+      free: true
+
+    dec:
+
+      value: -14.87174608660602
+
+      desc: Declination
+
+      min_value: -15.87174608660602
+
+      max_value: -13.87174608660602
+
+      unit: deg
+
+      is_normalization: false
+
+      delta: 1.4871746086606021
+
+      free: true
+
+    equinox: J2000
+
+  spectrum:
+
+    main:
+
+      Powerlaw:
+
+        K:
+
+          value: 1.0e-24
+
+          desc: Normalization (differential flux at the pivot value)
+
+          min_value: 1.0e-26
+
+          max_value: 1.0e-20
+
+          unit: keV-1 s-1 cm-2
+
+          is_normalization: true
+
+          delta: 0.1
+
+          free: true
+
+        piv:
+
+          value: 10000000000.0
+
+          desc: Pivot value
+
+          min_value: null
+
+          max_value: null
+
+          unit: keV
+
+          is_normalization: false
+
+          delta: 0.1
+
+          free: false
+
+        index:
+
+          value: -2.5
+
+          desc: Photon index
+
+          min_value: -3.0
+
+          max_value: -1.0
+
+          unit: ''
+
+          is_normalization: false
+
+          delta: 0.20099999999999998
+
+          free: true
+
+      polarization: {}
+
+Source2 (point source):
+
+  position:
+
+    ra:
+
+      value: 273.3073317640596
+
+      desc: Right Ascension
+
+      min_value: 272.3073317640596
+
+      max_value: 274.3073317640596
+
+      unit: deg
+
+      is_normalization: false
+
+      delta: 27.33073317640596
+
+      free: true
+
+    dec:
+
+      value: -12.713218171046071
+
+      desc: Declination
+
+      min_value: -13.713218171046071
+
+      max_value: -11.713218171046071
+
+      unit: deg
+
+      is_normalization: false
+
+      delta: 1.2713218171046072
+
+      free: true
+
+    equinox: J2000
+
+  spectrum:
+
+    main:
+
+      Powerlaw:
+
+        K:
+
+          value: 1.0e-24
+
+          desc: Normalization (differential flux at the pivot value)
+
+          min_value: 1.0e-26
+
+          max_value: 1.0e-20
+
+          unit: keV-1 s-1 cm-2
+
+          is_normalization: true
+
+          delta: 0.1
+
+          free: true
+
+        piv:
+
+          value: 10000000000.0
+
+          desc: Pivot value
+
+          min_value: null
+
+          max_value: null
+
+          unit: keV
+
+          is_normalization: false
+
+          delta: 0.1
+
+          free: false
+
+        index:
+
+          value: -2.5
+
+          desc: Photon index
+
+          min_value: -3.0
+
+          max_value: -1.0
+
+          unit: ''
+
+          is_normalization: false
+
+          delta: 0.20099999999999998
+
+          free: true
+
+      polarization: {}
+
+Source3 (point source):
+
+  position:
+
+    ra:
+
+      value: 277.26696169845496
+
+      desc: Right Ascension
+
+      min_value: 276.26696169845496
+
+      max_value: 278.26696169845496
+
+      unit: deg
+
+      is_normalization: false
+
+      delta: 27.726696169845496
+
+      free: true
+
+    dec:
+
+      value: -9.967632240461713
+
+      desc: Declination
+
+      min_value: -10.967632240461713
+
+      max_value: -8.967632240461713
+
+      unit: deg
+
+      is_normalization: false
+
+      delta: 0.9967632240461713
+
+      free: true
+
+    equinox: J2000
+
+  spectrum:
+
+    main:
+
+      Powerlaw:
+
+        K:
+
+          value: 1.0e-24
+
+          desc: Normalization (differential flux at the pivot value)
+
+          min_value: 1.0e-26
+
+          max_value: 1.0e-20
+
+          unit: keV-1 s-1 cm-2
+
+          is_normalization: true
+
+          delta: 0.1
+
+          free: true
+
+        piv:
+
+          value: 10000000000.0
+
+          desc: Pivot value
+
+          min_value: null
+
+          max_value: null
+
+          unit: keV
+
+          is_normalization: false
+
+          delta: 0.1
+
+          free: false
+
+        index:
+
+          value: -2.5
+
+          desc: Photon index
+
+          min_value: -3.0
+
+          max_value: -1.0
+
+          unit: ''
+
+          is_normalization: false
+
+          delta: 0.20099999999999998
+
+          free: true
+
+      polarization: {}
+
+Source4 (extended source):
+
+  Gaussian_on_sphere:
+
+    lon0:
+
+      value: 0.0
+
+      desc: Longitude of the center of the source
+
+      min_value: 0.0
+
+      max_value: 360.0
+
+      unit: deg
+
+      is_normalization: false
+
+      delta: 0.1
+
+      free: true
+
+    lat0:
+
+      value: 0.0
+
+      desc: Latitude of the center of the source
+
+      min_value: -90.0
+
+      max_value: 90.0
+
+      unit: deg
+
+      is_normalization: false
+
+      delta: 0.1
+
+      free: true
+
+    sigma:
+
+      value: 10.0
+
+      desc: Standard deviation of the Gaussian distribution
+
+      min_value: 0.0
+
+      max_value: 20.0
+
+      unit: deg
+
+      is_normalization: false
+
+      delta: 1.0
+
+      free: true
+
+  spectrum:
+
+    main:
+
+      Powerlaw:
+
+        K:
+
+          value: 1.0e-24
+
+          desc: Normalization (differential flux at the pivot value)
+
+          min_value: 1.0e-26
+
+          max_value: 1.0e-20
+
+          unit: keV-1 s-1 cm-2
+
+          is_normalization: true
+
+          delta: 0.1
+
+          free: true
+
+        piv:
+
+          value: 10000000000.0
+
+          desc: Pivot value
+
+          min_value: null
+
+          max_value: null
+
+          unit: keV
+
+          is_normalization: false
+
+          delta: 0.1
+
+          free: false
+
+        index:
+
+          value: -2.5
+
+          desc: Photon index
+
+          min_value: -3.0
+
+          max_value: -1.0
+
+          unit: ''
+
+          is_normalization: false
+
+          delta: 0.20099999999999998
+
+          free: true
+
+      polarization: {}
+
+Source5 (extended source):
+
+  Gaussian_on_sphere:
+
+    lon0:
+
+      value: 0.0
+
+      desc: Longitude of the center of the source
+
+      min_value: 0.0
+
+      max_value: 360.0
+
+      unit: deg
+
+      is_normalization: false
+
+      delta: 0.1
+
+      free: true
+
+    lat0:
+
+      value: 0.0
+
+      desc: Latitude of the center of the source
+
+      min_value: -90.0
+
+      max_value: 90.0
+
+      unit: deg
+
+      is_normalization: false
+
+      delta: 0.1
+
+      free: true
+
+    sigma:
+
+      value: 10.0
+
+      desc: Standard deviation of the Gaussian distribution
+
+      min_value: 0.0
+
+      max_value: 20.0
+
+      unit: deg
+
+      is_normalization: false
+
+      delta: 1.0
+
+      free: true
+
+  spectrum:
+
+    main:
+
+      Powerlaw:
+
+        K:
+
+          value: 1.0e-24
+
+          desc: Normalization (differential flux at the pivot value)
+
+          min_value: 1.0e-26
+
+          max_value: 1.0e-20
+
+          unit: keV-1 s-1 cm-2
+
+          is_normalization: true
+
+          delta: 0.1
+
+          free: true
+
+        piv:
+
+          value: 10000000000.0
+
+          desc: Pivot value
+
+          min_value: null
+
+          max_value: null
+
+          unit: keV
+
+          is_normalization: false
+
+          delta: 0.1
+
+          free: false
+
+        index:
+
+          value: -2.5
+
+          desc: Photon index
+
+          min_value: -3.0
+
+          max_value: -1.0
+
+          unit: ''
+
+          is_normalization: false
+
+          delta: 0.20099999999999998
+
+          free: true
+
+      polarization: {}
+
