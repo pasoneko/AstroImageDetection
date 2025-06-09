@@ -361,7 +361,7 @@ for i in range(len(df)):
                 keep[j] = False
 
 filtered_df = df[keep].reset_index(drop=True)
-filtered_df.to_csv(gen_dir+"outputseedlist.txt", sep="\t", index=False)
+filtered_df.to_csv(gen_dir+"/outputseedlist.txt", sep="\t", index=False)
 
 fig, ax = plt.subplots(figsize=(8, 2))
 ax.axis('off') 
@@ -377,7 +377,7 @@ except:
     text = f"DRIPS Compilation of Result. No Source Found"
     ax.text(0.5, 0.5, text, fontsize=12, ha='center', va='center', wrap=True)
 plt.show()
-plt.savefig(gen_dir + f'FinalSeedList.png')
+plt.savefig(gen_dir + f'/FinalSeedList.png')
 
 
 fig=plt.figure(figsize=(8, 8))
@@ -464,7 +464,7 @@ if args.saveModel:
     allmodel = Model(*sources.values())
     print(len(allmodel.sources), len(filtered_df))
     print(allmodel)
-    allmodel.save(gen_dir+"modelFit.yml", overwrite=True)
+    allmodel.save(gen_dir+"/modelFit.yml", overwrite=True)
 end_time = time.time()
 elapsed_time = end_time - start_time
 print(f"Elapsed time: {elapsed_time:.4f} seconds")
