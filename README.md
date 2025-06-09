@@ -30,5 +30,5 @@ NOTE:
 
 ```
 
-More detailed guide may or may not come. If you there are comments/questions/suggestion on the template maker or questions on hermes, contact Rishi Babu (rbabu@icecube.wisc.edu)
+If you there are comments/questions/suggestion on the running the script, contact Rishi Babu (rbabu@icecube.wisc.edu)
 
