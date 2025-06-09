@@ -702,3 +702,68 @@ def parse_model_file(catalog_results):
 
         sources.append(source_info)
     return sources
+
+def plotcatalogs(ax, wcs, *args):
+    for k in args:
+        print(k)
+    if '4hwc' in args:
+        print("Plotting 4HWC Catalog")
+        plot_4hwc1D(ax, wcs)
+    if 'lhaaso' in args:
+        print("Plotting LHAASO")
+        plot_1lhaaso(ax, wcs)
+    if 'fermi' in args:
+        plot_4FGL(ax, wcs, ra, dec, xlength, ylength)
+    if 'snr' in args:
+        plot_snrcat(ax, wcs)
+    if 'pulsar' in args:
+        plot_pulsar(ax, wcs)
+    if 'hgps' in args:
+        plot_hgps(ax, wcs)
+
+def makeplot(array, vmin, vmax, wcs, colormap, coordsys, title, xnum, ynum, save_dir, catalogs, pdf=False):
+    fig = plt.figure(figsize=(20,8))
+    ax = plt.subplot(1,1,1, projection=wcs)
+    im = ax.imshow(array, cmap=colormap, vmin=vmin, vmax=vmax)
+    fig.colorbar(im, orientation='vertical', fraction=0.046, pad=0.04, label='Significance')
+    if np.max(array) > 10:
+        levels = [5, 6, 7]
+        hi_transform = ax.get_transform(wcs)
+        ax.contour(array, levels=levels, transform=hi_transform, colors='black')
+    plot_ax_label(ax, coordsys)
+    if catalogs:
+        print("Plotting Catalogs")
+        plotcatalogs(ax, wcs, *catalogs)
+    ax.set_title(title)
+    plt.xlim(0, xnum)
+    plt.ylim(0, ynum)
+    if pdf==True:
+        pdf.savefig(fig, bbox_inches='tight')
+    else:
+        plt.savefig(save_dir + f'{title}.png')
+    plt.clf()
+
+def makeplotblobs(array, vmin, vmax, wcs, colormap, coordsys, title, xnum, ynum, save_dir, blobs, catalogs, pdf=False):
+    fig = plt.figure(figsize=(20,8))
+    ax = plt.subplot(1,1,1, projection=wcs)
+    im = ax.imshow(array, cmap=colormap, vmin=vmin, vmax=vmax)
+    fig.colorbar(im, orientation='vertical', fraction=0.046, pad=0.04, label='Significance')
+    if np.max(array) > 10:
+        levels = [5, 6, 7]
+        hi_transform = ax.get_transform(wcs)
+        ax.contour(array, levels=levels, transform=hi_transform, colors='black')
+    plot_ax_label(ax, coordsys)
+    if catalogs:
+        print("Plotting Catalogs")
+        plotcatalogs(ax, wcs, *catalogs)
+    ax.set_title(title)
+    plt.xlim(0, xnum)
+    plt.ylim(0, ynum)
+    if pdf==True:
+        pdf.savefig(fig, bbox_inches='tight')
+    else:
+        plt.savefig(save_dir + f'{title}.png')
+    plt.clf()
+
+def gaussian_fit(x, amplitude, mean, stddev):
+    return amplitude * np.exp(-((x - mean)**2) / (2 * stddev**2))
