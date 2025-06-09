@@ -721,29 +721,18 @@ def plotcatalogs(ax, wcs, *args):
     if 'hgps' in args:
         plot_hgps(ax, wcs)
 
-def makeplot(array, vmin, vmax, wcs, colormap, coordsys, title, xnum, ynum, save_dir, catalogs, pdf=False):
-    fig = plt.figure(figsize=(20,8))
-    ax = plt.subplot(1,1,1, projection=wcs)
-    im = ax.imshow(array, cmap=colormap, vmin=vmin, vmax=vmax)
-    fig.colorbar(im, orientation='vertical', fraction=0.046, pad=0.04, label='Significance')
-    if np.max(array) > 10:
-        levels = [5, 6, 7]
-        hi_transform = ax.get_transform(wcs)
-        ax.contour(array, levels=levels, transform=hi_transform, colors='black')
-    plot_ax_label(ax, coordsys)
-    if catalogs:
-        print("Plotting Catalogs")
-        plotcatalogs(ax, wcs, *catalogs)
-    ax.set_title(title)
-    plt.xlim(0, xnum)
-    plt.ylim(0, ynum)
-    if pdf==True:
-        pdf.savefig(fig, bbox_inches='tight')
-    else:
-        plt.savefig(save_dir + f'{title}.png')
-    plt.clf()
+def plotblobs(ax, wcs, blobs):
+    if 'psblobs' in blobs:
+        print("Plotting PS blobs")
+        plot_ps_blob(ax, blobs['psblobs'], wcs)
+    if 'extblobs' in blobs:
+        print("Plotting Extended blobs")
+        plot_ext_blob(ax, blobs['extblobs'], wcs)
+    if 'extblobs2' in blobs:
+        print("Plotting Extended blobs")
+        plot_ext_blob(ax, blobs['extblobs2'], wcs)
 
-def makeplotblobs(array, vmin, vmax, wcs, colormap, coordsys, title, xnum, ynum, save_dir, blobs, catalogs, pdf=False):
+def makeplot(array, vmin, vmax, wcs, colormap, coordsys, title, xnum, ynum, save_dir, catalogs, blobs=None, pdf=False):
     fig = plt.figure(figsize=(20,8))
     ax = plt.subplot(1,1,1, projection=wcs)
     im = ax.imshow(array, cmap=colormap, vmin=vmin, vmax=vmax)
@@ -753,13 +742,16 @@ def makeplotblobs(array, vmin, vmax, wcs, colormap, coordsys, title, xnum, ynum,
         hi_transform = ax.get_transform(wcs)
         ax.contour(array, levels=levels, transform=hi_transform, colors='black')
     plot_ax_label(ax, coordsys)
+    if blobs:
+        print("Plotting blobs")
+        plotblobs(ax, wcs, blobs)
     if catalogs:
         print("Plotting Catalogs")
         plotcatalogs(ax, wcs, *catalogs)
     ax.set_title(title)
     plt.xlim(0, xnum)
     plt.ylim(0, ynum)
-    if pdf==True:
+    if pdf:
         pdf.savefig(fig, bbox_inches='tight')
     else:
         plt.savefig(save_dir + f'{title}.png')
@@ -767,3 +759,5 @@ def makeplotblobs(array, vmin, vmax, wcs, colormap, coordsys, title, xnum, ynum,
 
 def gaussian_fit(x, amplitude, mean, stddev):
     return amplitude * np.exp(-((x - mean)**2) / (2 * stddev**2))
+def radius_to_sigma(R, fraction=0.6827):
+    return R / np.sqrt(2 * np.log(1 / (1 - fraction)))
