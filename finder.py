@@ -254,7 +254,9 @@ x_fit = np.linspace(bin_centers[0], bin_centers[-1], 500)
 y_fit = gaussian_fit(x_fit, *popt)
 
 sigma_resid = popt[2]
+##### TESTING
 deviation = 3*sigma_resid
+#deviation = 0.033
 plt.figure(figsize=(10, 8))
 log_counts = np.where(counts > 0, counts, 1) 
 plt.hist(pixels, bins=200, range=(np.min(pixels), np.max(pixels)),  color='fuchsia', edgecolor='green', alpha=0.6, label='Histogram (Counts)',histtype='step', linewidth=3)
@@ -309,7 +311,7 @@ else:
     makeplot(new_image, 0, np.max(new_image), wcs, args.colormap, coord_sys, "SecondFilterSeeds", xnum, ynum, outdir, catalogs, blobs)
 
 # Find the blobs from the Gaussian Smeared Image
-ext_blobs2 = blob_dog(gimage,min_sigma=0.8/pixel_size, max_sigma=1.5/pixel_size, threshold=0.05, exclude_border=80)
+ext_blobs2 = blob_dog(gimage,min_sigma=0.8/pixel_size, max_sigma=1.5/pixel_size, threshold=0.05/pixel_size, exclude_border=80) #threshold = 0.05
 print("Number of Ext blobs in Gaussian Smeared Image =",len(ext_blobs2))
 
 
