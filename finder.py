@@ -48,8 +48,12 @@ parser = ap.ArgumentParser(
     formatter_class=ap.ArgumentDefaultsHelpFormatter,
 )
 
+# Add arguments
 parser.add_argument(
     "-M", "--map", default=ap.SUPPRESS, required=True, help="Significance Map file in root format"
+)
+parser.add_argument(
+    "-O", "--outdir", action="store", required=False, help="output directory name for plots",default="plots",type=str
 )
 parser.add_argument("--ROI-center",action="store",required=True,dest="roiCenter",type=float,nargs=2,default=None,help="ROI Center of the image (ra, dec)",)
 parser.add_argument("--coordsys",action="store",dest="coordsys",default='G',help="Image Coordinate: 'G', 'C'.  (Default: 'G')",)
@@ -68,7 +72,7 @@ parser.add_argument("--plotStackSignif",action="store",dest="plotStackSignif",de
 parser.add_argument("--colormap",action="store",dest="colormap",default=milagro,help="Colormap (Default: Milagro)",)
 args = parser.parse_args()
 
-outdir = os.getcwd()+ '/plots/'
+outdir = os.getcwd()+ '/' + args.outdir + '/'
 gen_dir = os.getcwd()+'/generated_files'
 if not os.path.exists(outdir):
     os.makedirs(outdir)
@@ -311,6 +315,7 @@ else:
     makeplot(new_image, 0, np.max(new_image), wcs, args.colormap, coord_sys, "SecondFilterSeeds", xnum, ynum, outdir, catalogs, blobs)
 
 # Find the blobs from the Gaussian Smeared Image
+# TESTING: threshold=0.05/pixel_size
 ext_blobs2 = blob_dog(gimage,min_sigma=0.8/pixel_size, max_sigma=1.5/pixel_size, threshold=0.05/pixel_size, exclude_border=80) #threshold = 0.05
 print("Number of Ext blobs in Gaussian Smeared Image =",len(ext_blobs2))
 
