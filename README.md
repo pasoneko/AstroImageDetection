@@ -10,16 +10,17 @@ You need to [finder.py](finder.py) file which loades in the significance fits fi
 
 In the [finder.py](finder.py) file there are  multiple arguments
 - [ ] Required arguments:
-- [ ] "-M", "--map", "Significance Map file in root format" 
-- [ ] --ROI-center ROI Center of the image (ra, dec) or (l, b)
-- [ ] --coordsys : Image Coordinate: 'G', 'C'.  (Default: 'G') 
-- [ ] "--size" : ROI Size for the image(Default: 5 x 5 degrees)
+- [ ] `-M`, `--map` : "Significance Map file in root format" 
+- [ ] `--ROI-center` : ROI Center of the image (ra, dec) or (l, b)
+- [ ] `--coordsys` : Image Coordinate: 'G', 'C'.  (Default: 'G') 
+- [ ] `--size` : ROI Size for the image(Default: 5 x 5 degrees)
 - [ ] Optional arguments:
-- [ ] plot4HWC, plotlhaaso, plotHGPS, plotFermi(WiP), plotSNR, plotPulsar(WiP) are for plotting respective catalogs
-- [ ] plotPDF : save all plots in a PDF
-- [ ] saveModel : saveModel for final fits
-- [ ] plotSurface : plot the surface intensity peak maps
-- [ ] plotStackSignif : Plot Change in Significance Ranges
+- [ ] `-O`, `--outdir` : output directory for any generated plots
+- [ ] `--plot4HWC`, `--plotlhaaso`, `--plotHGPS`, `--plotFermi`(WiP), `--plotSNR`, `--plotPulsar`(WiP) are for plotting respective catalogs, example usage `--plot4HWC True`
+- [ ] `--plotPDF` : save all plots in a PDF
+- [ ] `--saveModel` : saveModel for final fits
+- [ ] `--plotSurface` : plot the surface intensity peak maps
+- [ ] `--plotStackSignif` : Plot Change in Significance Ranges
 
 ```
 NOTE: 
