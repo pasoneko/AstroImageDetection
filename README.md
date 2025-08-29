@@ -30,5 +30,5 @@ NOTE:
 
 ```
 
-If you there are comments/questions/suggestion on the running the script, contact Rishi Babu (rbabu@icecube.wisc.edu) or Palmer Wentworth (itomura@msu.edu).
+If you have any questions/comments/suggestions regarding the script or repository, contact Rishi Babu (rbabu@icecube.wisc.edu) or Palmer Wentworth (itomura@msu.edu).
 
