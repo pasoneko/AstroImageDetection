@@ -1,12 +1,11 @@
-# Image Catalog Search
+# DRIPS Image Processing Source Search
 
 ## Getting started
 
-Repository for DRIPS Image Processing Souce Seeder
-
 Instructions:
-1. Enable your HAL environment
-2. Run `finder.py` with the arguments specified below
+1. Clone the repository
+2. Enable your HAL environment
+3. Run `finder.py` with the arguments specified below
 
 ## Arguments for `finder.py`:
 ### Required arguments:
