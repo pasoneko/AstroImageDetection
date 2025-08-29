@@ -1,21 +1,21 @@
 # Image Catalog Search
 
-
-
 ## Getting started
 
-Git Repo for Basic Source Seed Detection using Image Processing
+Repository for DRIPS Image Processing Souce Seeder
 
-You need to [finder.py](finder.py) file which loades in the significance fits files of your region and creates the final seeds of your ROI. You just need to run this!
+Instructions:
+1. Enable your HAL environment
+2. Run `finder.py` with the arguments specified below
 
-In the [finder.py](finder.py) file there are  multiple arguments
-- [ ] Required arguments:
+## Arguments for `finder.py`:
+### Required arguments:
 - [ ] `-M`, `--map` : "Significance Map file in root format" 
 - [ ] `--ROI-center` : ROI Center of the image (ra, dec) or (l, b)
 - [ ] `--coordsys` : Image Coordinate: 'G', 'C'.  (Default: 'G') 
 - [ ] `--size` : ROI Size for the image(Default: 5 x 5 degrees)
-- [ ] Optional arguments:
-- [ ] `-O`, `--outdir` : output directory for any generated plots
+### Optional arguments:
+- [ ] `-O`, `--outdir` : output directory for any generated plots (recommended, otherwise old plots will be overwritten)
 - [ ] `--plot4HWC`, `--plotlhaaso`, `--plotHGPS`, `--plotFermi`(WiP), `--plotSNR`, `--plotPulsar`(WiP) are for plotting respective catalogs, example usage `--plot4HWC True`
 - [ ] `--plotPDF` : save all plots in a PDF
 - [ ] `--saveModel` : saveModel for final fits
@@ -31,5 +31,5 @@ NOTE:
 
 ```
 
-If you there are comments/questions/suggestion on the running the script, contact Rishi Babu (rbabu@icecube.wisc.edu)
+If you there are comments/questions/suggestion on the running the script, contact Rishi Babu (rbabu@icecube.wisc.edu) or Palmer Wentworth (itomura@msu.edu).
 
