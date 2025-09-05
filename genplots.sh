@@ -12,12 +12,14 @@ read -p "ROI-center coord2: " CENTER2
 
 read -p "output directory: " OUTDIR
 
-SIZES=(10 8 6 4 2 1)
+SIZES=(6 2 1)
 
 for SIZE in "${SIZES[@]}"; do
     OUTDIRX="$OUTDIR/$SIZE"
+    OUTDIR_OLD=$OUTDIRX+"_old"
 
     python finder.py -M $MAP --ROI-center $CENTER1 $CENTER2 --size $SIZE $SIZE -O $OUTDIRX
+    python finder.py -M $MAP --ROI-center $CENTER1 $CENTER2 --size $SIZE $SIZE -O $OUTDIR_OLD --oldthreshold True
 done
 
 echo "Complete"

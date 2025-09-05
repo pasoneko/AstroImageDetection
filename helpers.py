@@ -26,6 +26,7 @@ from threeML import *
 from hawc_hal import HAL, HealpixConeROI, HealpixMapROI
 from astropy.table import Table
 from matplotlib.patches import Ellipse
+from multiprocessing import Pool, cpu_count
 import sys
 sys.path.append("imagecatalog/")
 #Import HESS catalog
@@ -75,7 +76,7 @@ fermi_fits = fits.open('datasets/gll_psc_v35.fits')
 p_data = fermi_fits[1].data
 fermi_fulltable = Table(p_data)
 
-def loadmap(filename, coord_sys, coords,*args):
+def loadmap(filename, coord_sys, coords,*args,**kwargs):
     print("Coords=",coords)
     with fits.open(filename) as ihdu:
         if 'xyrange' in args:
@@ -127,12 +128,16 @@ def loadmap(filename, coord_sys, coords,*args):
         ihdu[1].header['COORDSYS'] = 'icrs    '
         wcs = WCS(target_header)
         print(wcs)
-        array, footprint = reproject_from_healpix(ihdu[1],target_header)
+
+        parallel = kwargs['parallel'] if 'parallel' in kwargs.keys() else False
+        n_procs = kwargs['n_processes'] if 'n_processes' in kwargs.keys() else -1
+
+        array, footprint = reproject_from_healpix(ihdu[1],target_header,parallel=parallel, n_processes=n_procs)
         print("Fits File loaded")
         
     return array, footprint, wcs
 
-def loadvgpsmap(filename, coord_sys, coords,*args):
+def loadvgpsmap(filename, coord_sys, coords,*args,**kwargs):
     print("Coords=",coords)
     with fits.open(filename) as ihdu:
         if 'xyrange' in args:
@@ -184,7 +189,11 @@ def loadvgpsmap(filename, coord_sys, coords,*args):
         ihdu[1].header['COORDSYS'] = 'icrs    '
         wcs = WCS(target_header)
         print(wcs)
-        array, footprint = reproject_from_healpix(ihdu[1],target_header, nested=True)
+
+        parallel = kwargs['parallel'] if 'parallel' in kwargs.keys() else False
+        n_procs = kwargs['n_processes'] if 'n_processes' in kwargs.keys() else -1
+
+        array, footprint = reproject_from_healpix(ihdu[1],target_header, nested=True,parallel=parallel, n_processes=n_procs)
         print("Fits File loaded")
         
     return array, footprint, wcs
@@ -317,25 +326,78 @@ def plot_ext_blob(ax, ext_blobs, wcs):
     except:
         pass
 
-def blob_filter_intensity(blobs, image, min_intensity, wcs):
+
+def process_blob(args):
+    blob, image, wcs, min_intensity = args
+    y, x, r = blob
+    
+    image_array = np.array(image)
+    
+    y_min = int(max(y - r, 0))
+    y_max = int(min(y + r, image_array.shape[0]))
+    x_min = int(max(x - r, 0))
+    x_max = int(min(x + r, image_array.shape[1]))
+    
+    y_grid, x_grid = np.ogrid[y_min:y_max, x_min:x_max]
+    distance_from_center = np.sqrt((y_grid - y)**2 + (x_grid - x)**2)
+    circular_mask = distance_from_center <= r - 0.2 * r
+    
+    region = image_array[y_min:y_max, x_min:x_max]
+    mean_intensity = region[circular_mask].mean()
+    
+    if mean_intensity >= min_intensity:
+        coord = astropy_utils.pixel_to_skycoord(x, y, wcs=wcs)
+        print(f"Blob Intensity {mean_intensity}, Coords ({coord.icrs.ra}, {coord.icrs.dec}), Radius {r}, Pixel Radius {r*(1/360)}")
+        return (blob, coord.icrs, r*(1/360), mean_intensity)
+    
+    return None
+
+def blob_filter_intensity(blobs, image, min_intensity, wcs, n_procs=None):
+    """Parallel processing of blobs using multiprocessing"""
+    if n_procs is None:
+        n_procs = np.min((10, cpu_count()))
+    
+    # split
+    args_list = [(blob, image, wcs, min_intensity) for blob in blobs]
+    
     hfiltered_blobs = []
     hfiltered_coords = []
     hfiltered_radius = []
-    for blob in blobs:
-        y, x, r = blob
-        y_min, y_max = int(max(y - r, 0)), int(min(y + r, np.array(image).shape[0]))
-        x_min, x_max = int(max(x - r, 0)), int(min(x + r, np.array(image).shape[1]))
-        y_grid, x_grid = np.ogrid[y_min:y_max, x_min:x_max]
-        distance_from_center = np.sqrt((y_grid - y)**2 + (x_grid -x)**2)
-        circular_mask = distance_from_center <= r-0.2*r
-        mean_intensity = np.array(image)[y_min:y_max, x_min:x_max][circular_mask].mean()
-        if min_intensity <= mean_intensity :
-            coord = astropy_utils.pixel_to_skycoord(x, y, wcs=wcs)
+    
+    # multiprocess plz work
+    with Pool(processes=n_procs) as pool:
+        results = pool.map(process_blob, args_list)
+    
+    # gather all blobs
+    for result in results:
+        if result is not None:
+            blob, coord, radius, intensity = result
             hfiltered_blobs.append(blob)
-            hfiltered_coords.append(coord.icrs)
-            hfiltered_radius.append(r*(1/360))
-            print(r"Blob Intensity {}, Coords ({}, {}), Radius {}, Pixel Radius {}".format(mean_intensity, coord.icrs.ra, coord.icrs.dec, r, r*(1/360)))
+            hfiltered_coords.append(coord)
+            hfiltered_radius.append(radius)
+    
     return hfiltered_blobs, hfiltered_coords, hfiltered_radius
+
+
+# def blob_filter_intensity(blobs, image, min_intensity, wcs):
+#     hfiltered_blobs = []
+#     hfiltered_coords = []
+#     hfiltered_radius = []
+#     for blob in blobs:
+#         y, x, r = blob
+#         y_min, y_max = int(max(y - r, 0)), int(min(y + r, np.array(image).shape[0]))
+#         x_min, x_max = int(max(x - r, 0)), int(min(x + r, np.array(image).shape[1]))
+#         y_grid, x_grid = np.ogrid[y_min:y_max, x_min:x_max]
+#         distance_from_center = np.sqrt((y_grid - y)**2 + (x_grid -x)**2)
+#         circular_mask = distance_from_center <= r-0.2*r
+#         mean_intensity = np.array(image)[y_min:y_max, x_min:x_max][circular_mask].mean()
+#         if min_intensity <= mean_intensity :
+#             coord = astropy_utils.pixel_to_skycoord(x, y, wcs=wcs)
+#             hfiltered_blobs.append(blob)
+#             hfiltered_coords.append(coord.icrs)
+#             hfiltered_radius.append(r*(1/360))
+#             print(r"Blob Intensity {}, Coords ({}, {}), Radius {}, Pixel Radius {}".format(mean_intensity, coord.icrs.ra, coord.icrs.dec, r, r*(1/360)))
+#     return hfiltered_blobs, hfiltered_coords, hfiltered_radius
 
 
 def blob_filter_overlap(hfiltered_blobs, hfiltered_coords, hfiltered_radius, hfiltered_blobs2, hfiltered_coords2, hfiltered_radius2):

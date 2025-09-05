@@ -62,6 +62,7 @@ parser.add_argument("--plot4HWC",action="store",dest="plot4hwc",default=False,he
 parser.add_argument("--plotlhaaso",action="store",dest="plotlhaaso",default=False,help="Overlay 1LHAASO Catalog Results",)
 parser.add_argument("--plotHGPS",action="store",dest="plothgps",default=False,help="Overlay H.E.S.S. HGPS Catalog Results",)
 parser.add_argument("--plotFermi",action="store",dest="plotfermi",default=False,help="Overlay 4FGL Catalog Results (Not Fully Implemented)",)
+parser.add_argument("--oldthreshold",action="store",dest="oldthreshold",default=False,help="debug old pipeline",)
 parser.add_argument("--plotSNR",action="store",dest="plotsnr",default=False,help="Overlay SNR Catalog",)
 parser.add_argument("--plotPulsar",action="store",dest="plotpulsar",default=False,help="Overlay Pulsar ATNF Catalog",)
 parser.add_argument("--psfsize",action="store",dest="psfsize",type=float,nargs=1,default=0.2,help="Size of the gaussian smearing (Default: 0.2 degrees)",)
@@ -87,6 +88,7 @@ isfermi=args.plotfermi
 issnr=args.plotsnr
 ispular=args.plotpulsar
 psf=args.psfsize
+oldthreshold=args.oldthreshold
 catalogs=[]
 if is4hwc:
     catalogs.append('4hwc')
@@ -121,7 +123,7 @@ origin = [ra_center, dec_center, xlength, ylength]
 ra_center = "{:.2f}".format(ra_center)
 dec_center = "{:.2f}".format(dec_center)
 
-array, footprint, wcs = loadmap(filename, coord_sys, origin, 'origin')
+array, footprint, wcs = loadmap(filename, coord_sys, origin, 'origin', parallel=True, n_processes=int(xlength))
 xnum = array.shape[1]
 ynum = array.shape[0]
 
@@ -279,14 +281,35 @@ plt.grid(True, which='both', linestyle='--', linewidth=0.5)
 plt.savefig(outdir+'DoGHistogram.png')
 plt.clf()
 
+# TESTING
+if not oldthreshold:
+    meowge = new_image
 
-# Find the blobs from the DoG image
-print("Finding point source blobs")
-ps_blobs = blob_dog(new_image, min_sigma=0.1/pixel_size, max_sigma=psf/pixel_size, threshold=0.01, exclude_border=20)#, overlap=0.9)
-print("Number of point source blobs=",len(ps_blobs))
-print("Finding extended source blobs")
-ext_blobs = blob_dog(new_image,min_sigma=psf/pixel_size, max_sigma=0.5/pixel_size, threshold=0.01, exclude_border=20)#, overlap=0.9)
-print("Number of ext source blobs=",len(ext_blobs))
+    gradx, grady =  np.gradient(meowge)
+    div = gradx + grady
+
+    div_norm = (div - np.min(div)) / np.max(div - np.min(div))
+    meowge = div_norm * meowge
+
+    clahe = exposure.equalize_adapthist(meowge)
+    mu1 = np.mean(meowge)
+    std1 = np.std(meowge)
+    threshold1 = 0.01 * (mu1 + 3 * std1)
+
+    # Find the blobs from the DoG image
+    print("Finding point source blobs")
+    ps_blobs = blob_dog(meowge, min_sigma=0.1/pixel_size, max_sigma=psf/pixel_size, threshold=threshold1, exclude_border=20)#, overlap=0.9)
+    print("Number of point source blobs=",len(ps_blobs))
+    print("Finding extended source blobs")
+    ext_blobs = blob_dog(meowge,min_sigma=psf/pixel_size, max_sigma=0.5/pixel_size, threshold=threshold1, exclude_border=20)#, overlap=0.9)
+    print("Number of ext source blobs=",len(ext_blobs))
+else:
+    print("Finding point source blobs")
+    ps_blobs = blob_dog(new_image, min_sigma=0.1/pixel_size, max_sigma=psf/pixel_size, threshold=0.01, exclude_border=20)#, overlap=0.9)
+    print("Number of point source blobs=",len(ps_blobs))
+    print("Finding extended source blobs")
+    ext_blobs = blob_dog(new_image,min_sigma=psf/pixel_size, max_sigma=0.5/pixel_size, threshold=0.01, exclude_border=20)#, overlap=0.9)
+    print("Number of ext source blobs=",len(ext_blobs))
 
 # DoG Image Intensity Filtering
 intensity_min = deviation
@@ -316,8 +339,21 @@ else:
 
 # Find the blobs from the Gaussian Smeared Image
 # TESTING: threshold=0.05/pixel_size
-ext_blobs2 = blob_dog(gimage,min_sigma=0.8/pixel_size, max_sigma=1.5/pixel_size, threshold=0.05/pixel_size, exclude_border=80) #threshold = 0.05
-print("Number of Ext blobs in Gaussian Smeared Image =",len(ext_blobs2))
+if not oldthreshold:
+    gim2 = gimage
+    gradx2, grady2 =  np.gradient(gim2)
+    div2 = gradx2 + grady2
+
+    div_norm2 = (div2 - np.min(div2)) / np.max(div2 - np.min(div2))
+    gim2 = div_norm2 * gim2
+    gclahe = exposure.equalize_adapthist(gim2)
+    mu_g = np.mean(gim2)
+    std_g = np.std(gim2)
+    ext_blobs2 = blob_dog(gim2,min_sigma=0.8/pixel_size, max_sigma=1.5/pixel_size, threshold=0.05*(mu_g + 3 * std_g), exclude_border=80) #threshold = 0.05
+    print("Number of Ext blobs in Gaussian Smeared Image =",len(ext_blobs2))
+else:
+    ext_blobs2 = blob_dog(gimage,min_sigma=0.8/pixel_size, max_sigma=1.5/pixel_size, threshold=0.05, exclude_border=80) #threshold = 0.05
+    print("Number of Ext blobs in Gaussian Smeared Image =",len(ext_blobs2))
 
 
 # Filter the Gaussian Blobs from above
