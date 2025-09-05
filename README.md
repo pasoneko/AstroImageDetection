@@ -7,6 +7,8 @@ Instructions:
 2. Enable your HAL environment
 3. Run `finder.py` with the arguments specified below
 
+**Please Note:** This current fork utilizes a modified `reproject`. Compatability with unmodified `reproject` in addition to instructions on how to modify your own `reproject` instance will be added soon. 
+
 ## Arguments for `finder.py`:
 ### Required arguments:
 - [ ] `-M`, `--map` : "Significance Map file in root format" 
