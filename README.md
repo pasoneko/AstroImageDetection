@@ -20,6 +20,7 @@ Instructions:
 - [ ] `--saveModel` : saveModel for final fits
 - [ ] `--plotSurface` : plot the surface intensity peak maps
 - [ ] `--plotStackSignif` : Plot Change in Significance Ranges
+- [ ] `--oldthreshold` : use non-divergence/thresholded pipeline (current pipeline in [original repository](https://github.com/rishibbdb/AstroImageDetection))
 
 ```
 NOTE: 
